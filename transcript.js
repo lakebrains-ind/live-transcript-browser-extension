@@ -152,6 +152,66 @@ let mic;
 				  })();
 				  */
 			  console.log( message.payload.content);
+			   
+			  var button = document.getElementById("btn1");
+              btn1.addEventListener('click',handleStop);
+
+			  const API_KEY = 'AIzaSyDbFLJKr8OzNdQOS1ZXvs8VArjfkRloyAM';
+              const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
+              const SPREADSHEET_ID = '1CFLDIzYGS8_nvSepbJQxV-FN6PONQOzUBXG7B3qcdSI'; 
+//const SPREADSHEET_TAB_NAME = 'main';
+
+function onGAPILoad() {
+  gapi.client.init({
+    // Don't pass client nor scope as these will init auth2, which we don't want
+    // clientId: CLIENT_ID,
+    // scope: SCOPES,
+    apiKey: API_KEY,
+    discoveryDocs: DISCOVERY_DOCS,
+  }).then(function () {
+    console.log('gapi initialized')
+  }, function(error) {
+    console.log('error', error)
+  });
+}
+
+/*chrome.extension.onMessage.addListener(
+  function(request, sender, sendResponse) {
+  */  // Get token
+   function handleStop(){
+	    chrome.identity.getAuthToken({interactive: true}, function(token) {
+      // Set token in GAPI library
+      /*gapi.auth.setToken({
+        'access_token': token,
+      });*/
+	  const token = gapi.client.getToken();
+	  if (token !== null) {
+		google.accounts.oauth2.revoke(token.access_token);
+		gapi.client.setToken('');
+		document.getElementById('my_console').innerText = message.payload.content; 
+
+     /* const body = {values: [[
+        new Date(), // Timestamp
+       
+      ]]};*/
+
+      // Append values
+      /*gapi.client.sheets.spreadsheets.values.append({
+        spreadsheetId: SPREADSHEET_ID,
+        range: SPREADSHEET_TAB_NAME,
+        valueInputOption: 'USER_ENTERED',
+        resource: body
+      }).then((response) => {
+        console.log(`${response.result.updates.updatedCells} cells appended.`)
+        sendResponse({success: true});
+      });
+    })
+
+    // Wait for response
+   /* return true;
+  }*/
+				}
+
 
 				}
 				if (conversationId) {
