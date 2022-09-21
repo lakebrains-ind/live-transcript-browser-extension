@@ -331,70 +331,84 @@ return true;
 };
 };*/
 function stopTranscript() {
+console.log(transcriptToShow);
+
 	chrome.identity.getAuthToken({ interactive: true }, async function (token) {
 		console.log(token);
 		const auth = token; // Please replace "###" with your access token.
-const sheetId = "11VXUz0rhLAgB3-o6JKQKXgLKYf5Wg_RrRaT6FoMxizw" // Please set your Spreadsheet ID.
-
-$.ajax({
-  type: 'put',
-  headers: { Authorization: auth, 'content-type': 'application/json' },
-  data: JSON.stringify({
-    "values": [["32"]]
-  }),
-  url: 'https://sheets.googleapis.com/v4/spreadsheets/' + sheetId + '/values/A1?valueInputOption=RAW',
-  success: function (r) {
-    console.log(r)
-  }, error: function (r) {
-    console.log(r)
-  }
-});
-		
-		// 	const SHEET_ID = '11VXUz0rhLAgB3-o6JKQKXgLKYf5Wg_RrRaT6FoMxizw';
-		// const ACCESS_TOKEN = token;
-
-		// 	await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}:batchUpdate`, {
-		// 		method: "POST",
-		// 		headers: {
-		// 			"Content-Type": "application/json",
-		// 			//update this token with yours. 
-		// 			Authorization: `Bearer ${ACCESS_TOKEN}`,
-		// 		},
-		// 		body: JSON.stringify({
-
-		// 			requests: [{
-		// 				repeatCell: {
-		// 					range: {
-		// 						startColumnIndex: 0,
-		// 						endColumnIndex: 1,
-		// 						startRowIndex: 0,
-		// 						endRowIndex: 1,
-		// 						sheetId: 0
-		// 					},
-		// 					cell: {
-		// 						Value: {
-		// 							transcriptToShow
-		// 						},
-		// 					},
-		// 					fields: "*"
-		// 				}
-		// 			}]
-
-		// 		})
+		const sheetId = "11VXUz0rhLAgB3-o6JKQKXgLKYf5Wg_RrRaT6FoMxizw" // Please set your Spreadsheet ID.
+		var params = {
+			"range": "Sheet1",
+			"majorDimension": "ROWS",
+			"values": [
+				transcriptToShow
+			],
+		}
+		var xhr = new XMLHttpRequest();
+		xhr.open('PUT', 'https://sheets.googleapis.com/v4/spreadsheets/11VXUz0rhLAgB3-o6JKQKXgLKYf5Wg_RrRaT6FoMxizw/values/Sheet1?valueInputOption=USER_ENTERED');
+		xhr.setRequestHeader('Authorization', 'Bearer ' + auth);
+		xhr.send(JSON.stringify(params));
 
 
-		// 	})
-		// 	.then(res => {
-		// 		console.log(res);
-		// 	})
-		// 	.catch(err => {
-		// 		console.log(err);
-		// 	})
-		
-		
-		
 
-	})
+		// $.ajax({
+		//   type: 'put',
+		//   headers: { Authorization: auth, 'content-type': 'application/json' },
+		//   data: JSON.stringify({
+		//     "values": [["32"]]
+		//   }),
+		//   url: 'https://sheets.googleapis.com/v4/spreadsheets/' + sheetId + '/values/A1?valueInputOption=RAW',
+		//   success: function (r) {
+		//     console.log(r)
+		//   }, error: function (r) {
+		//     console.log(r)
+		//   }
+	});
+
+	// 	const SHEET_ID = '11VXUz0rhLAgB3-o6JKQKXgLKYf5Wg_RrRaT6FoMxizw';
+	// const ACCESS_TOKEN = token;
+
+	// 	await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}:batchUpdate`, {
+	// 		method: "POST",
+	// 		headers: {
+	// 			"Content-Type": "application/json",
+	// 			//update this token with yours. 
+	// 			Authorization: `Bearer ${ACCESS_TOKEN}`,
+	// 		},
+	// 		body: JSON.stringify({
+
+	// 			requests: [{
+	// 				repeatCell: {
+	// 					range: {
+	// 						startColumnIndex: 0,
+	// 						endColumnIndex: 1,
+	// 						startRowIndex: 0,
+	// 						endRowIndex: 1,
+	// 						sheetId: 0
+	// 					},
+	// 					cell: {
+	// 						Value: {
+	// 							transcriptToShow
+	// 						},
+	// 					},
+	// 					fields: "*"
+	// 				}
+	// 			}]
+
+	// 		})
+
+
+	// 	})
+	// 	.then(res => {
+	// 		console.log(res);
+	// 	})
+	// 	.catch(err => {
+	// 		console.log(err);
+	// 	})
+
+
+
+
 }
 
 let button = document.getElementById("btn");
