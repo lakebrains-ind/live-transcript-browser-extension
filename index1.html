@@ -8,19 +8,18 @@
 	<title></title>
 	<style>
 		.myDiv {
-
-  width: 400px;
-  border: 7px solid black ;
+    margin: auto;
+    width: 600px;
   padding: 50px;
-  background-color: lightgoldenrodyellow;
-  margin: 20px;
-  align-self: center;
+  background-color: black;
+  height: 400px;
+ 
 }
 .button {
   background-color: lightblue; 
-  border: none;
+  border: 7px black;
   color: black;
-  border: 2px  grey;
+  
   padding: 20px;
   text-align: center;
   text-decoration: none;
@@ -36,14 +35,17 @@
 .yellow{
     text-align: right;
 
-	color:red ;
+	color:white ;
 }
 .blue{
 	text-align: left;
-	color: black;
+	color: white;
 }
 
-		</style>
+	</style>
+
+
+
 		
 </head>
 
@@ -51,13 +53,14 @@
 <body>
 <div id="error"></div>	
 
- <div class="col-md-12 text-center">
+<div class="col-md-12 text-center">
 <input type="submit" class="button" id="btn"  value="Real Time Transcript" >
-
+<input type="submit" id="btn1" value="stop">
 <div class="myDiv" id="my_console">
 <p></p><p></p>
 </div>	
 </body>
+<script src="jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 <script src="transcript.js"></script>
 
 

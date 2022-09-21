@@ -1,5 +1,5 @@
 {
-    "name": "OAuth Tutorial FriendBlock",
+    "name": "OAuthA",
     "version": "1.0",
     "description": "Uses OAuth to connect to Google's People API and display contacts photos.",
     "manifest_version": 3,
@@ -16,20 +16,25 @@
         }
     ],
     "action": {
-      "default_title": "Get real time transcript",
+      "default_title": " transcript",
       "default_icon": "mic.png"
         
     },
     "oauth2": {
-      "client_id": "777665716958-57isrmimsnvbb89u9v4nu6bh24b7p8bg.apps.googleusercontent.com",
-      "scopes":["https://www.googleapis.com/auth/userinfo.email",
-      "https://www.googleapis.com/auth/contacts.readonly"
+      "client_id": "966328590350-93h6d90eioi1ccfnv3lq0siu6tq0v6i8.apps.googleusercontent.com",
+      "scopes":[
 
+
+"https://www.googleapis.com/auth/spreadsheets",                     "https://www.googleapis.com/auth/drive",
+"https://www.googleapis.com/auth/drive.readonly",
+"https://www.googleapis.com/auth/drive.file",
+"https://www.googleapis.com/auth/spreadsheets.readonly"
     ] 
 
     },
     "permissions":[
       "identity",
+      "https://docs.google.com/spreadsheets/",
       "tabs",
         "activeTab",
         "desktopCapture",
