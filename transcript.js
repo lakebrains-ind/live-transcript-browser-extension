@@ -130,7 +130,6 @@ const startTranscript = async (stream, mic) => {
 					mesg.appendChild(name)
 					mesg.appendChild(transcript)
 					txtarea.appendChild(mesg)
-<<<<<<< HEAD
 					transObj ["Agent", message.payload.content]
 					transcriptToShow.push(transObj);
 				}
@@ -149,33 +148,9 @@ const startTranscript = async (stream, mic) => {
 					transcriptToShow.push(transObj);
 				}
 
-=======
-					transObj = {
-						name: "agent",
-						transcript: message.payload.content,
-					};
-					transcriptToShow.push(transObj);
-				}
-				else {
-					let txtarea = document.getElementById("my_console")
-					let mesg = document.createElement('div')
-					mesg.classList.add("yellow")
-					let name = document.createElement('p')
-					let transcript = document.createElement('p')
-					name.innerHTML = "prospect",
-						transcript.innerHTML = message.payload.content
-					mesg.appendChild(name)
-					mesg.appendChild(transcript)
-					txtarea.appendChild(mesg)
-					transObj = {
-						name: "agent",
-						transcript: message.payload.content,
+				
 
-					};
-					transcriptToShow.push(transObj);
-				}
 
->>>>>>> 4c5d3ea36149a540bbb49d70efca893531bec4b9
 
 				/*(()=>{
 				  const console_log = window.console.log;
@@ -351,14 +326,6 @@ sendResponse({success: true});
 return true;
 };
 };*/
-<<<<<<< HEAD
-
-
-
-
-
-=======
->>>>>>> 4c5d3ea36149a540bbb49d70efca893531bec4b9
 function stopTranscript() {
 console.log(transcriptToShow);
 
@@ -366,7 +333,7 @@ console.log(transcriptToShow);
 		console.log(token);
 		const auth = token; // Please replace "###" with your access token.
 		const sheetId = "11VXUz0rhLAgB3-o6JKQKXgLKYf5Wg_RrRaT6FoMxizw" // Please set your Spreadsheet ID.
-<<<<<<< HEAD
+
 var params = {
 	"range":"Sheet1!A1",
 	"majorDimension": "ROWS",
@@ -376,22 +343,8 @@ var xhr = new XMLHttpRequest();
 xhr.open('PUT', 'https://sheets.googleapis.com/v4/spreadsheets/11VXUz0rhLAgB3-o6JKQKXgLKYf5Wg_RrRaT6FoMxizw/values/Sheet1!A1?valueInputOption=USER_ENTERED');
 xhr.setRequestHeader('Authorization', 'Bearer ' + auth);
 xhr.send(JSON.stringify(params));
-=======
-		var params = {
-			"range": "Sheet1",
-			"majorDimension": "ROWS",
-			"values": [
-				transcriptToShow
-			],
-		}
-		var xhr = new XMLHttpRequest();
-		xhr.open('PUT', 'https://sheets.googleapis.com/v4/spreadsheets/11VXUz0rhLAgB3-o6JKQKXgLKYf5Wg_RrRaT6FoMxizw/values/Sheet1?valueInputOption=USER_ENTERED');
-		xhr.setRequestHeader('Authorization', 'Bearer ' + auth);
-		xhr.send(JSON.stringify(params));
 
->>>>>>> 4c5d3ea36149a540bbb49d70efca893531bec4b9
-
-
+		
 		// $.ajax({
 		//   type: 'put',
 		//   headers: { Authorization: auth, 'content-type': 'application/json' },
