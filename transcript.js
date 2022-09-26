@@ -78,9 +78,9 @@ const startTranscript = async (stream, mic) => {
 		},
 		body: JSON.stringify({
 			type: "application",
-			appId: "68684855713956764c363233754f4d74484c4e4d41324638546a744275344937",
+			appId: "576c4a6c636d3855746b38345252657663525765434642784a38453076516156",
 			appSecret:
-				"4770786755334d5477345334376e46314b7573476274514a7a384b53542d7a6e5a396c3178462d56326d724c794264476a4a64634a54635452784e51634f3148",
+				"727861577a7a5f6c35433967364a7344426d3279663239576958586a443834486e66745f3862536634536d694e387266635963466a715a77372d716d30646c4f",
 		}),
 	};
 	const res = await fetch(
@@ -151,8 +151,9 @@ const startTranscript = async (stream, mic) => {
 				
 
 
-
-				/*(()=>{
+                        
+				/* code to show console data to textarea 
+				(()=>{
 				  const console_log = window.console.log;
 				  window.console.log = function(...args){
 					console_log(...args);
@@ -326,25 +327,32 @@ sendResponse({success: true});
 return true;
 };
 };*/
-function stopTranscript() {
-console.log(transcriptToShow);
+// let fileMetadata = {
+// 	name: name,
+// 	title: 'rawData', //This does NOT get set! Tab appears as "Sheet1"
+// 	mimeType: 'application/vnd.google-apps.spreadsheet'
+//   }
 
-	chrome.identity.getAuthToken({ interactive: true }, async function (token) {
-		console.log(token);
-		const auth = token; // Please replace "###" with your access token.
-		const sheetId = "11VXUz0rhLAgB3-o6JKQKXgLKYf5Wg_RrRaT6FoMxizw" // Please set your Spreadsheet ID.
 
-var params = {
-	"range":"Sheet1!A1",
-	"majorDimension": "ROWS",
-	"values": transcriptToShow,
-}
-var xhr = new XMLHttpRequest();
-xhr.open('PUT', 'https://sheets.googleapis.com/v4/spreadsheets/11VXUz0rhLAgB3-o6JKQKXgLKYf5Wg_RrRaT6FoMxizw/values/Sheet1!A1?valueInputOption=USER_ENTERED');
-xhr.setRequestHeader('Authorization', 'Bearer ' + auth);
-xhr.send(JSON.stringify(params));
+//function to send data to googlesheet?
+// function stopTranscript() {
+// 	console.log(transcriptToShow);
+	
+// chrome.identity.getAuthToken({ interactive: true }, async function (token) {
+//  	console.log(token);
+// 	const auth = token;
+//   var params = {
+// 	"range":"Sheet1!A1",
+// 	"majorDimension": "ROWS",
+// 	"values": transcriptToShow,
+// 	}
 
-		
+// var xhr = new XMLHttpRequest();
+// xhr.open('PUT', 'https://sheets.googleapis.com/v4/spreadsheets/11VXUz0rhLAgB3-o6JKQKXgLKYf5Wg_RrRaT6FoMxizw/values/Sheet1!A1?valueInputOption=USER_ENTERED');
+// xhr.setRequestHeader('Authorization', 'Bearer ' + auth);
+// xhr.send(JSON.stringify(params));
+
+//    })		
 		// $.ajax({
 		//   type: 'put',
 		//   headers: { Authorization: auth, 'content-type': 'application/json' },
@@ -356,9 +364,11 @@ xhr.send(JSON.stringify(params));
 		//     console.log(r)
 		//   }, error: function (r) {
 		//     console.log(r)
-		//   }
-	});
+	// 	//   }
 
+	// });
+
+//}
 	// 	const SHEET_ID = '11VXUz0rhLAgB3-o6JKQKXgLKYf5Wg_RrRaT6FoMxizw';
 	// const ACCESS_TOKEN = token;
 
@@ -399,11 +409,19 @@ xhr.send(JSON.stringify(params));
 	// 	.catch(err => {
 	// 		console.log(err);
 	// 	})
+function stopTranscript(){
 
-
+	
+	// a [save as] dialog will be shown
+	window.open("data:application/txt,"+"\n" + encodeURIComponent(name+transcript),+"\n"+ "_self");
+	//document.write("\n");
 
 
 }
+
+
+
+
 
 let button = document.getElementById("btn");
 //button.addEventListener('click',Startspeaking);
@@ -423,3 +441,5 @@ button1.addEventListener('click', () => {
 if(stopElem){
 stopElem.addEventListener('click', stopCapture, false);
 }*/
+
+//create a googlesheet using javascript?
