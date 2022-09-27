@@ -145,31 +145,11 @@ const startTranscript = async (stream, mic) => {
 					mesg.appendChild(transcript)
 					txtarea.appendChild(mesg)
 					transObj = ["Prospect",  message.payload.content ];
-					transcriptToShow.push(transObj);
+					transcriptToShow.push(transObj)
 				}
-
-				
-
-
-                        
-				/* code to show console data to textarea 
-				(()=>{
-				  const console_log = window.console.log;
-				  window.console.log = function(...args){
-					console_log(...args);
-					var textarea = document.getElementById('my_console');
-					if(!textarea) return;
-					args.forEach(arg=>textarea.value += `${JSON.stringify(arg)}\n`);
-				  }
-				})();
-				*/
 				console.log(transcriptToShow);
 
 			}
-
-
-
-
 
 			if (conversationId) {
 				// You can log sentiments on messages from data.message.data.conversationId
@@ -261,7 +241,7 @@ const startTranscript = async (stream, mic) => {
 	 * the computer's microphone. Starts a recording session which sends the audio stream to
 	 * the WebSocket endpoint for processing.
 	 */
-	const handleSuccess = (stream) => {
+	    const handleSuccess = (stream) => {
 		const AudioContext = window.AudioContext;
 		let context = new AudioContext({ sampleRate: 44100 });
 		const source = context.createMediaStreamSource(stream);
@@ -289,142 +269,15 @@ const startTranscript = async (stream, mic) => {
 	handleSuccess(stream);
 };
 
-/*function stopTranscript(){ 
- function onGAPILoad() {
-   gapi.client.init({
-	 apiKey: API_KEY,
-	 discoveryDocs: DISCOVERY_DOCS,
-   }).then(function () {
-	 console.log('gapi initialized')
-   }, function(error) {
-	 console.log('error', error)
-   });
- 
-chrome.identity.getAuthToken({interactive: true}, function(token) {
-// Set token in GAPI library
-gapi.auth.setToken({
-'access_token': token,
-});
-
-const body = {values: [[
-new Date(), // Timestamp
- 
-]]};    
-
-// Append values
-gapi.client.sheets.spreadsheets.values.append({
-spreadsheetId: SPREADSHEET_ID,
-range: SPREADSHEET_TAB_NAME,
-valueInputOption: 'USER_ENTERED',
-resource: body
-}).then((response) => {
-console.log(`${response.result.updates.updatedCells} cells appended.`)
-sendResponse({success: true});
-});
-})
-
-// Wait for response
-return true;
-};
-};*/
-// let fileMetadata = {
-// 	name: name,
-// 	title: 'rawData', //This does NOT get set! Tab appears as "Sheet1"
-// 	mimeType: 'application/vnd.google-apps.spreadsheet'
-//   }
-
-
-//function to send data to googlesheet?
-// function stopTranscript() {
-// 	console.log(transcriptToShow);
-	
-// chrome.identity.getAuthToken({ interactive: true }, async function (token) {
-//  	console.log(token);
-// 	const auth = token;
-//   var params = {
-// 	"range":"Sheet1!A1",
-// 	"majorDimension": "ROWS",
-// 	"values": transcriptToShow,
-// 	}
-
-// var xhr = new XMLHttpRequest();
-// xhr.open('PUT', 'https://sheets.googleapis.com/v4/spreadsheets/11VXUz0rhLAgB3-o6JKQKXgLKYf5Wg_RrRaT6FoMxizw/values/Sheet1!A1?valueInputOption=USER_ENTERED');
-// xhr.setRequestHeader('Authorization', 'Bearer ' + auth);
-// xhr.send(JSON.stringify(params));
-
-//    })		
-		// $.ajax({
-		//   type: 'put',
-		//   headers: { Authorization: auth, 'content-type': 'application/json' },
-		//   data: JSON.stringify({
-		//     "values": [["32"]]
-		//   }),
-		//   url: 'https://sheets.googleapis.com/v4/spreadsheets/' + sheetId + '/values/A1?valueInputOption=RAW',
-		//   success: function (r) {
-		//     console.log(r)
-		//   }, error: function (r) {
-		//     console.log(r)
-	// 	//   }
-
-	// });
-
-//}
-	// 	const SHEET_ID = '11VXUz0rhLAgB3-o6JKQKXgLKYf5Wg_RrRaT6FoMxizw';
-	// const ACCESS_TOKEN = token;
-
-	// 	await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}:batchUpdate`, {
-	// 		method: "POST",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 			//update this token with yours. 
-	// 			Authorization: `Bearer ${ACCESS_TOKEN}`,
-	// 		},
-	// 		body: JSON.stringify({
-
-	// 			requests: [{
-	// 				repeatCell: {
-	// 					range: {
-	// 						startColumnIndex: 0,
-	// 						endColumnIndex: 1,
-	// 						startRowIndex: 0,
-	// 						endRowIndex: 1,
-	// 						sheetId: 0
-	// 					},
-	// 					cell: {
-	// 						Value: {
-	// 							transcriptToShow
-	// 						},
-	// 					},
-	// 					fields: "*"
-	// 				}
-	// 			}]
-
-	// 		})
-
-
-	// 	})
-	// 	.then(res => {
-	// 		console.log(res);
-	// 	})
-	// 	.catch(err => {
-	// 		console.log(err);
-	// 	})
+//Function to download the transcripted data in a csv file format
 function stopTranscript(){
-
-	
-	// a [save as] dialog will be shown
-	window.open("data:application/txt,"+"\n" + encodeURIComponent(name+transcript),+"\n"+ "_self");
-	//document.write("\n");
-
-
+	let csvContent = "data:text/csv;charset=utf-8," + transcriptToShow.map(e => e.join(",")).join("\n");
+    var encodedUri = encodeURI(csvContent);
+    window.open(encodedUri);
 }
 
 
-
-
-
 let button = document.getElementById("btn");
-//button.addEventListener('click',Startspeaking);
 button.addEventListener('click', () => {
 	Startspeaking();
 	startcapture();
@@ -434,12 +287,3 @@ let button1 = document.getElementById("btn1");
 button1.addEventListener('click', () => {
 	stopTranscript();
 });
-//let button1=document.getElementById("btn1");
-//button1.addEventListener(stopTranscript);
-
-/*var stopElem = document.getElementById('btn2');
-if(stopElem){
-stopElem.addEventListener('click', stopCapture, false);
-}*/
-
-//create a googlesheet using javascript?
