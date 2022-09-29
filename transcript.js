@@ -10,8 +10,8 @@ const errorElem = document.getElementById('error');
 const displayMediaOptions = {
 	audio: true,
 	//{ mandatory: {
-	//  chromeMediaSource: 'system',
-	//chromeMediaSourceId:' streamId'
+	// chromeMediaSource: 'system',
+	// chromeMediaSourceId:' streamId'
 	// }
 	//},
 	video: false,
@@ -23,7 +23,6 @@ function Startspeaking() {
 			console.log("hello there");
 			mic = stream;
 			startTranscript(mic, true);
-
 		}).catch(err => {
 			// handling the error if any
 			errorElem.innerHTML = err;
@@ -126,12 +125,12 @@ const startTranscript = async (stream, mic) => {
 					let name = document.createElement('p')
 					let transcript = document.createElement('p')
 					name.innerHTML = "agent",
-						transcript.innerHTML = message.payload.content
+					transcript.innerHTML = message.payload.content
 					mesg.appendChild(name)
 					mesg.appendChild(transcript)
 					txtarea.appendChild(mesg)
-					transObj ["Agent", message.payload.content]
-					transcriptToShow.push(transObj);
+					transObj = ["Agent", message.payload.content];
+					transcriptToShow.push(transObj)
 				}
 				else {
 					let txtarea = document.getElementById("my_console")
@@ -140,7 +139,7 @@ const startTranscript = async (stream, mic) => {
 					let name = document.createElement('p')
 					let transcript = document.createElement('p')
 					name.innerHTML = "prospect",
-						transcript.innerHTML = message.payload.content
+					transcript.innerHTML = message.payload.content
 					mesg.appendChild(name)
 					mesg.appendChild(transcript)
 					txtarea.appendChild(mesg)
@@ -271,16 +270,15 @@ const startTranscript = async (stream, mic) => {
 
 //Function to download the transcripted data in a csv file format
 function stopTranscript(){
-	let csvContent = "data:text/csv;charset=utf-8," + transcriptToShow.map(e => e.join(",")).join("\n");
-    var encodedUri = encodeURI(csvContent);
-    window.open(encodedUri);
-}
-
-
+	console.log(transcriptToShow);
+	    let csvContent = "data:text/csv;charset=utf-8," + transcriptToShow.map(e => e.join(",")).join("\n");
+		var encodedUri = encodeURI(csvContent);
+		window.open(encodedUri);
+	}
 let button = document.getElementById("btn");
 button.addEventListener('click', () => {
 	Startspeaking();
-	startcapture();
+	startcapture(); 
 
 });
 let button1 = document.getElementById("btn1");
