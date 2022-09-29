@@ -1,7 +1,7 @@
 {
-    "name": "OAuthA",
+    "name": "Live Transcript Extension",
     "version": "1.0",
-    "description": "Uses OAuth to connect to Google's People API and display contacts photos.",
+    "description": "Help people to get real time transcript.",
     "manifest_version": 3,
     "content_scripts": [
         {
