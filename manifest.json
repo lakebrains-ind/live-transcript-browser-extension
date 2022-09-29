@@ -19,19 +19,9 @@
         "default_title": " transcript",
         "default_icon": "mic.png"
     },
-    "oauth2": {
-        "client_id": "966328590350-93h6d90eioi1ccfnv3lq0siu6tq0v6i8.apps.googleusercontent.com",
-        "scopes": [
-            "https://www.googleapis.com/auth/spreadsheets",
-            "https://www.googleapis.com/auth/drive",
-            "https://www.googleapis.com/auth/drive.readonly",
-            "https://www.googleapis.com/auth/drive.file",
-            "https://www.googleapis.com/auth/spreadsheets.readonly"
-        ]
-    },
+    
     "permissions": [
         "identity",
-        "https://docs.google.com/spreadsheets/",
         "tabs",
         "activeTab",
         "desktopCapture",
