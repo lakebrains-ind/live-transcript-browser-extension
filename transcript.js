@@ -125,7 +125,7 @@ const startTranscript = async (stream, mic) => {
 					let name = document.createElement('p')
 					let transcript = document.createElement('p')
 					name.innerHTML = "agent",
-					transcript.innerHTML = message.payload.content
+						transcript.innerHTML = message.payload.content
 					mesg.appendChild(name)
 					mesg.appendChild(transcript)
 					txtarea.appendChild(mesg)
@@ -139,11 +139,11 @@ const startTranscript = async (stream, mic) => {
 					let name = document.createElement('p')
 					let transcript = document.createElement('p')
 					name.innerHTML = "prospect",
-					transcript.innerHTML = message.payload.content
+						transcript.innerHTML = message.payload.content
 					mesg.appendChild(name)
 					mesg.appendChild(transcript)
 					txtarea.appendChild(mesg)
-					transObj = ["Prospect",  message.payload.content ];
+					transObj = ["Prospect", message.payload.content];
 					transcriptToShow.push(transObj)
 				}
 				console.log(transcriptToShow);
@@ -240,7 +240,7 @@ const startTranscript = async (stream, mic) => {
 	 * the computer's microphone. Starts a recording session which sends the audio stream to
 	 * the WebSocket endpoint for processing.
 	 */
-	    const handleSuccess = (stream) => {
+	const handleSuccess = (stream) => {
 		const AudioContext = window.AudioContext;
 		let context = new AudioContext({ sampleRate: 44100 });
 		const source = context.createMediaStreamSource(stream);
@@ -269,17 +269,16 @@ const startTranscript = async (stream, mic) => {
 };
 
 //Function to download the transcripted data in a csv file format
-function stopTranscript(){
+function stopTranscript() {
 	console.log(transcriptToShow);
-	    let csvContent = "data:text/csv;charset=utf-8," + transcriptToShow.map(e => e.join(",")).join("\n");
-		var encodedUri = encodeURI(csvContent);
-		window.open(encodedUri);
-	}
+	let csvContent = "data:text/csv;charset=utf-8," + transcriptToShow.map(e => e.join(",")).join("\n");
+	var encodedUri = encodeURI(csvContent);
+	window.open(encodedUri);
+}
 let button = document.getElementById("btn");
 button.addEventListener('click', () => {
 	Startspeaking();
-	startcapture(); 
-
+	startcapture();
 });
 let button1 = document.getElementById("btn1");
 button1.addEventListener('click', () => {

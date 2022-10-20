@@ -21,15 +21,13 @@
         "default_icon": "mic.png"
     },
     "oauth2": {
-        "client_id": "777665716958-662s9rt811h15kpf5cogcdainlufuho5.apps.googleusercontent.com",
+        "client_id": "75322180579-medvlen37uc6t499lcit39rh7437jph9.apps.googleusercontent.com",
         "scopes": [
-            "https://www.googleapis.com/auth/userinfo.email",
-            "https://www.googleapis.com/auth/contacts.readonly"
+            "https://www.googleapis.com/auth/userinfo.email"
         ]
     },
     "permissions": [
         "identity",
-        "tabs",
         "activeTab",
         "desktopCapture",
         "storage"

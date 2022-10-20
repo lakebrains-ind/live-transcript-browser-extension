@@ -4,7 +4,12 @@ window.onload = function() {
         console.log(token);
         fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`)
         .then((response)=> response.json())
-        .then((response) => console.log(response))      
+        .then((response) => {
+          chrome.storage.local.set({email: response.email}, function() {
+            console.log('Value is set to ' + response.email);
+          });
+          console.log(response)
+        })      
         //chrome.tabs.create({url: 'index1.html'});
         chrome.windows.create(
             {
