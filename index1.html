@@ -1,91 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width,
-	initial-scale=1.0">
-	<title></title>
-	<style>
-	.myDiv {
-  width: 425px;
-  padding: 50px;
-  background-color: #4F2A89;
-  margin: 10px;
-  align-self: center;
-  border-radius: 15px;
-  opacity: 0.9;
-}  
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,
+	initial-scale=1.0"
+    />
+    <title>Live Transcript Extension</title>
 
-  .button {
-  padding: 15px 25px;
-  font-size: 24px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  color: #fff;
-  background-color: #0e2964;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
-  width: 520px;
-}
+    <link 
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/browser.css" />
+  </head>
+  <body>
+    <div id="error"></div>
+    <div class="container-main col-md-12 text-center">
+      <img
+        src="/img/logo_lakebrains.9fbc8e7aabc5a8822a56f1d071d2d785.svg"
+        alt=""
+        srcset=""
+      />
+      <input type="submit" class="button schedule-meeting-btn" id="btn"
+      value="Capture Transcript" ; >
+      <div class="myDiv" id="my_console" style="margin-top: 15px">
+        <p></p>
+        <p></p>
+      </div>
 
-.button:hover {background-color: #3e8e41}
+      <input
+        type="submit"
+        id="btn1"
+        class="button1"
+        value="Download"
+        img
+        src="img\download-icon.jpg"
+        alt=""
+        srcset=""
+      />
+      <input
+      type="submit"
+      id="btn2"
+      class="button1"
+      value="E-mail"
+      img
+      src="img\download-icon.jpg"
+      alt=""
+      srcset=""
+    />
 
-.button:active {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-}      
-
-.button1 {
-  padding: 15px 25px;
-  font-size: 24px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  color: #fff;
-  background-color:#0e2964;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
-}
-
-.button1:hover {background-color: #3e8e41}
-
-.button1:active {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-}
-      
-html { 
-  background: url(mg1.jpg) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-} 
-.yellow{
-    text-align: right;
-    color:white;
-}
-.blue{
-	text-align: left;
-	color:wheat;
-}
-</style>
-</head>
-<body >
-<div id="error"></div>	
-<div class="col-md-12 text-center">
-<input type="submit" class="button" id="btn"  value="Click Here to Get Real Time Transcript" style="margin: 11px;" ;" >
-<div class="myDiv" id="my_console" style="margin-top: 15px">
-  <p></p><p></p>
-  </div>	
-  
-<input type="submit" id="btn1" class="button1"  value="Download" style="margin: 7px;">
-</body>
-<script src="jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-<script src="transcript.js"></script>
+      <p class="container copyright text-center text-md-left">
+        © 2022,
+        <a class="font-w-700" href="https://devlopment.lakebrains.com/"
+          >Lakebrains Technologies</a
+        >. All rights reserved.
+      </p>
+    </div>
+  </body>
+  <script
+    src="/js/jquery-3.6.1.min.js"
+    crossorigin="anonymous"
+  >
+</script>
+  <script src="/js/transcript.js"></script>
 </html>

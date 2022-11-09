@@ -3,8 +3,6 @@ let mic;
 let transObj = [];
 let transcriptToShow = [];
 const API_KEY = 'AIzaSyC36GnMbenxJs1PKyCNFzNOJpK-71ES0RU'
-const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
-const SPREADSHEET_ID = '1arJgUVcrxU_72Xs0EqVGcUzozZQSMBaIvUyLbCgW360'
 const errorElem = document.getElementById('error');
 //Declare the streamConstraints object
 const displayMediaOptions = {
@@ -77,9 +75,9 @@ const startTranscript = async (stream, mic) => {
 		},
 		body: JSON.stringify({
 			type: "application",
-			appId: "693338775235544f4131436c6846574247556254746b51575567674d42414d4c",
+			appId: "68684855713956764c363233754f4d74484c4e4d41324638546a744275344937",
 			appSecret:
-				" 393063304b6f4f386e69496a675043666977414f376a676b332d32384758734c503937543974664d776f38583555746379435252684f33414b39554a47467636",
+				"4770786755334d5477345334376e46314b7573476274514a7a384b53542d7a6e5a396c3178462d56326d724c794264476a4a64634a54635452784e51634f3148",
 		}),
 	};
 	const res = await fetch(
@@ -116,9 +114,8 @@ const startTranscript = async (stream, mic) => {
 		}
 		if (data.type === "message_response") {
 			for (let message of data.messages) {
-
-				console.log(mic);
-				if (mic) {
+					console.log(mic);
+				    if (mic) {
 					let txtarea = document.getElementById("my_console")
 					let mesg = document.createElement('div')
 					mesg.classList.add("blue")
@@ -129,7 +126,7 @@ const startTranscript = async (stream, mic) => {
 					mesg.appendChild(name)
 					mesg.appendChild(transcript)
 					txtarea.appendChild(mesg)
-					transObj = ["Agent", message.payload.content];
+					transObj = ["Mic", message.payload.content];
 					transcriptToShow.push(transObj)
 				}
 				else {
@@ -143,7 +140,7 @@ const startTranscript = async (stream, mic) => {
 					mesg.appendChild(name)
 					mesg.appendChild(transcript)
 					txtarea.appendChild(mesg)
-					transObj = ["Prospect", message.payload.content];
+					transObj = ["Speaker", message.payload.content];
 					transcriptToShow.push(transObj)
 				}
 				console.log(transcriptToShow);
@@ -275,6 +272,38 @@ function stopTranscript() {
 	var encodedUri = encodeURI(csvContent);
 	window.open(encodedUri);
 }
+function sendMail(){
+	chrome.storage.local.get(['email'], function(result) {
+		var mail= result.email;
+		console.log('Value currently is ' + mail);
+		let csvContnt = "data:text/csv;charset=utf-8," + transcriptToShow.map(e => e.join(",")).join("\n");
+	var encodedUri = encodeURI(csvContnt);
+		fetch('https://transcript.lakebrains.com/',{
+			method:'POST',
+			mode: 'no-cors',
+			headers:{
+			  'Accept': 'application/json',
+			  'Content-Type':'application/json',
+			  "Access-Control-Allow-Origin": "*",
+			},
+			
+		   body: JSON.stringify({
+			  email:mail,
+			  filename:csvContnt
+			})
+		}).then(res=>{
+		  
+			return res.json()
+				})
+		 .then(res=>{ console.log(res)
+		})
+		 .catch(error=>console.log('ERROR'))
+	  
+	 	
+		//console.log('Value currently is ' + result.email);
+	  });
+
+}
 let button = document.getElementById("btn");
 button.addEventListener('click', () => {
 	Startspeaking();
@@ -284,3 +313,7 @@ let button1 = document.getElementById("btn1");
 button1.addEventListener('click', () => {
 	stopTranscript();
 });
+let button2 = document.getElementById("btn2");
+button2.addEventListener('click',()=>{
+	sendMail();
+})

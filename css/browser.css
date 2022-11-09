@@ -1,0 +1,142 @@
+.myDiv {
+    width: 425px;
+    padding: 50px;
+    background-color: #ffffff;
+    margin: 10px;
+    align-self: center;
+    border-radius: 15px;
+    opacity: 0.9;
+    height: 64vh;
+    width: 90%;
+    box-shadow: 0 3px 7px #000000;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  /* .button {
+    padding: 9px 25px;
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: rgb(7, 6, 6);
+    background-color: #63A4FF;
+    border: none;
+    border-radius: 15px;
+    
+    width: 520px;
+    font-weight: 600;
+  } */
+  .schedule-meeting-btn {
+    background-color: #005082;
+    border: 2px solid transparent;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 20px;
+    font-size: x-large;
+    margin-top: 17px;
+    margin-right: 140px;
+    border-radius: 25px 5px 25px 5px;
+    transition: all 0.3s ease-in;
+  }
+  .schedule-meeting-btn:hover {
+    background-color: #fff !important;
+    border: 2px solid #005082;
+    box-shadow: 6px 7px 3px 0 #005082;
+    color: #000 !important;
+    font-weight: 600;
+  }
+  .button:hover {
+    background-color: #0d52e8;
+    color: azure;
+    
+  }
+  
+  .button1 {
+    padding: 9px 25px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: rgb(0, 0, 0);
+    background-color: #83eaf1 #63a4ff;
+    border: 2px solid #000;
+    align-items: center;
+    border-radius: 25px 5px 25px 5px;
+    margin-top: 11px;
+    justify-content: center;
+    min-height: 45px;
+    min-width: 130px;
+  }
+  
+  .button1:hover {
+    background: transparent;
+    box-shadow: 5px 5px 5px 0 #005082;
+    color: #005082;
+    transition: .3s ease-in-out;
+  }
+  
+  .button1:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+  .container-main img {
+    height: 4vh;  
+    margin-top: -21px;
+    float: left;
+  }
+  
+  html {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+  .yellow {
+    text-align: right;
+    color: white;
+    background: #a4ede394;
+    line-height: 1;
+    padding: 0px;
+    border-radius: 10px;
+    margin-right: -37px;
+    margin-top: 15px;
+    float: right;
+    width: 80%;
+  }
+  
+  p:first-child {
+    font-weight: bold;
+    padding: 4px;
+    color: darkblue;
+    margin-top: 2px;
+  }
+  .blue {
+    line-height: 2;
+    background: #ebeaea;
+    padding: 0px;
+    text-align: left;
+    border-radius: 10px;
+    margin-top: 15px;
+    margin-left: -36px;
+    float: left;
+    width: 80%;
+  }
+  .container-main {
+    margin-top: 37px;
+  }
+  p {
+    margin: -6px 28px 10px;
+    font-size: 15px;
+    color: black;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+  
+  #presenter-name {
+    font-weight: 500;
+  }
+  .copyright {
+    margin-top: 13px;
+      font-size: 17px;
+  }
