@@ -2,7 +2,7 @@ let speaker;
 let mic;
 let transObj = [];
 let transcriptToShow = [];
-const API_KEY = 'AIzaSyC36GnMbenxJs1PKyCNFzNOJpK-71ES0RU'
+const API_KEY = 'AIzaSyBGKI0IL79IXPru-EqDZzhl2DfNR78LI-s'
 const errorElem = document.getElementById('error');
 //Declare the streamConstraints object
 const displayMediaOptions = {
@@ -75,9 +75,9 @@ const startTranscript = async (stream, mic) => {
 		},
 		body: JSON.stringify({
 			type: "application",
-			appId: "68684855713956764c363233754f4d74484c4e4d41324638546a744275344937",
+			appId: "4e703070536e6e58356e4b77306d56374d413730484e644d42723579357a7966",
 			appSecret:
-				"4770786755334d5477345334376e46314b7573476274514a7a384b53542d7a6e5a396c3178462d56326d724c794264476a4a64634a54635452784e51634f3148",
+				"3136653373426c2d375a6a524763374c524f414f64576435595954626d6b6e59306e4e654467596a3173314453447167674532367957736e714131494632595f",
 		}),
 	};
 	const res = await fetch(
@@ -276,7 +276,9 @@ function sendMail(){
 	chrome.storage.local.get(['email'], function(result) {
 		var mail= result.email;
 		console.log('Value currently is ' + mail);
-		let csvContnt = "data:text/csv;charset=utf-8," + transcriptToShow.map(e => e.join(",")).join("\n");
+		let csvContnt = "data:text/csv;charset=utf-8," +transcriptToShow.map(e => e.join(",")).join("\n");
+		let csvData=transcriptToShow.map(e => e.join(",")).join("\n");
+		console.log(csvData);
 	var encodedUri = encodeURI(csvContnt);
 		fetch('https://transcript.lakebrains.com/',{
 			method:'POST',
