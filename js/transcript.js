@@ -2,7 +2,11 @@ let speaker;
 let mic;
 let transObj = [];
 let transcriptToShow = [];
-const API_KEY = 'AIzaSyBGKI0IL79IXPru-EqDZzhl2DfNR78LI-s'
+var today = new Date();
+var h = today.getHours();
+var mi = today.getMinutes();
+var s = today.getSeconds();
+const API_KEY = 'AIzaSyBSN75RpjjIEW3aBD9qaRR0nIZbYXqAhgw'
 const errorElem = document.getElementById('error');
 //Declare the streamConstraints object
 const displayMediaOptions = {
@@ -272,40 +276,71 @@ function stopTranscript() {
 	var encodedUri = encodeURI(csvContent);
 	window.open(encodedUri);
 }
-function sendMail(){
-	chrome.storage.local.get(['email'], function(result) {
-		var mail= result.email;
-		console.log('Value currently is ' + mail);
-		let csvContnt = "data:text/csv;charset=utf-8," +transcriptToShow.map(e => e.join(",")).join("\n");
-		let csvData=transcriptToShow.map(e => e.join(",")).join("\n");
-		console.log(csvData);
-	var encodedUri = encodeURI(csvContnt);
-		fetch('https://transcript.lakebrains.com/',{
-			method:'POST',
-			mode: 'no-cors',
-			headers:{
-			  'Accept': 'application/json',
-			  'Content-Type':'application/json',
-			  "Access-Control-Allow-Origin": "*",
-			},
-			
-		   body: JSON.stringify({
-			  email:mail,
-			  filename:csvContnt
-			})
-		}).then(res=>{
-		  
-			return res.json()
-				})
-		 .then(res=>{ console.log(res)
-		})
-		 .catch(error=>console.log('ERROR'))
-	  
-	 	
-		//console.log('Value currently is ' + result.email);
-	  });
+function sendMail() {
+	createFolder();
+	var text = transcriptToShow.map(e => e.join(",")).join("\n");
+	console.log("text..",text);
+	if(text){
+		chrome.storage.local.get(["token"], function(resp) {
+			console.log(resp.token);
+		const blob = new Blob([text],{type:'text/csv;charset=utf-8'});
 
+		//const parent_folder = localStorage.getItem('parent_folder');
+
+		var metadata = {
+		  name:'Live-Transcript '+ h + "-" + mi + "-" + s +'.csv',
+		  mimeType:'text/csv;charset=utf-8'
+		  //parents:['1gdL-5KUJ2fGonwrfe9sxjO5ztzRn-Z-v']
+		};
+		var formData = new FormData();
+		formData.append("metadata",new Blob([JSON.stringify(metadata)],{type:'application/json'}));
+		formData.append("file", blob);
+
+		fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",{
+		  method:'POST',
+		  headers:new Headers({ "Authorization": "Bearer " + resp.token}),
+		  body: formData
+		}).then(function(response){
+		  return response.json();
+		}).then(function(value){
+		  console.log(value);
+		});
+	});
+	  }
 }
+function createFolder(){
+	chrome.storage.local.get(["token"], function(resp){
+		fetch("https://www.googleapis.com/drive/v3/files",{
+			method: "POST",
+			headers: {
+			  Authorization: `Bearer ${resp.token}`,
+			  "Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+			  mimeType: "application/vnd.google-apps.folder",
+			  name: "Live Transcript",
+			}),
+		}).then(function(response){
+			return response.json();
+	});
+});
+}
+// let createFolderOptions = { 
+	
+// 	method: "POST",
+// 	headers: {
+// 	  Authorization: `Bearer ${token}`,
+// 	  "Content-Type": "application/json",
+// 	},
+// 	body: JSON.stringify({
+// 	  mimeType: "application/vnd.google-apps.folder",
+// 	  name: "My new google drive folder!",
+// 	}),
+//   };
+  
+//   const response = await fetch("https://www.googleapis.com/drive/v3/files", createFolderOptions);
+//   const json = await response.json();
+
 let button = document.getElementById("btn");
 button.addEventListener('click', () => {
 	Startspeaking();
@@ -319,3 +354,41 @@ let button2 = document.getElementById("btn2");
 button2.addEventListener('click',()=>{
 	sendMail();
 })
+
+
+
+// function sendMail(){
+// 	chrome.storage.local.get(['email'], function(result) {
+// 		var mail= result.email;
+// 		console.log('Value currently is ' + mail);
+// 		let csvContnt = "data:text/csv;charset=utf-8," +transcriptToShow.map(e => e.join(",")).join("\n");
+// 		let csvData=transcriptToShow.map(e => e.join(",")).join("\n");
+// 		console.log(csvData);
+// 	// var encodedUri = encodeURI(csvContnt);
+// 	// window.open(encodedUri);
+// 		fetch('https://transcript.lakebrains.com/',{
+// 			method:'POST',
+// 			mode: 'no-cors',
+// 			headers:{
+// 			  'Accept': 'application/json',
+// 			  'Content-Type':'application/json',
+// 			  "Access-Control-Allow-Origin": "*",
+// 			},
+			
+// 		   body: JSON.stringify({
+// 			  email:mail,
+// 			  filename:csvContnt
+// 			})
+// 		}).then(res=>{
+		  
+// 			return res.json()
+// 				})
+// 		 .then(res=>{ console.log(res)
+// 		})
+// 		 .catch(error=>console.log('ERROR'))
+	  
+	 	
+// 		//console.log('Value currently is ' + result.email);
+// 	  });
+
+// }

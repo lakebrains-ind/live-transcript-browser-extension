@@ -5,7 +5,7 @@ window.onload = function() {
         fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`)
         .then((response)=> response.json())
         .then((response) => {
-          chrome.storage.local.set({email: response.email}, function() {
+          chrome.storage.local.set({email: response.email,token:token}, function() {
             console.log('Value is set to ' + response.email);
           });
           console.log(response)

@@ -21,7 +21,7 @@
         "default_icon": "mic.png"
     },
     "oauth2": {
-        "client_id": "75322180579-medvlen37uc6t499lcit39rh7437jph9.apps.googleusercontent.com",
+        "client_id": "594020365856-fqpumdvtiu0prd2s2o8i4mp9fp58j9e9.apps.googleusercontent.com",
         "scopes": [
             "https://www.googleapis.com/auth/userinfo.email",
             "https://www.googleapis.com/auth/drive"
@@ -33,6 +33,12 @@
         "desktopCapture",
         "storage"
     ],
+    "content_security_policy": {
+"extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'",
+ "sandbox": "script-src 'self' 'wasm-unsafe-eval'; sandbox allow-scripts; script-src 'self' 'https://www.googleapis.com'; object-src 'self'"
+},
+
+
     "background": {
         "service_worker": "background.js"
     }
