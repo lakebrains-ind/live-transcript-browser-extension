@@ -276,6 +276,19 @@ function stopTranscript() {
 	var encodedUri = encodeURI(csvContent);
 	window.open(encodedUri);
 }
+function openFile(){
+    chrome.windows.create(
+      {
+          focused: true,
+          width: 300,
+          height: 300,
+          type: "popup",
+          url: "index2.html",
+          top: 0,
+          left: 0,
+  
+      })
+  }
 function sendMail() {
 	createFolder();
 	var text = transcriptToShow.map(e => e.join(",")).join("\n");
@@ -353,6 +366,10 @@ button1.addEventListener('click', () => {
 let button2 = document.getElementById("btn2");
 button2.addEventListener('click',()=>{
 	sendMail();
+})
+let button3=document.getElementById("btn3");
+button3.addEventListener('click',()=>{
+	openFile();
 })
 
 

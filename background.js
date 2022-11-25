@@ -1,7 +1,7 @@
 // // chrome.action.onClicked.addListener(function() {
 // //     chrome.tabs.create({url: 'index.html'});
 // //   });
-// console.log("hello");
+
 // let windowId;
 // chrome.action.onClicked.addListener(() => {
 //     chrome.windows.create(
@@ -40,4 +40,3 @@ chrome.action.onClicked.addListener(function() {
       })
     // chrome.tabs.create({url: 'index.html'});
   });
-  
