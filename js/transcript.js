@@ -274,27 +274,17 @@ function stopTranscript() {
 	console.log(transcriptToShow);
 	let csvContent = "data:text/csv;charset=utf-8," + transcriptToShow.map(e => e.join(",")).join("\n");
 	var encodedUri = encodeURI(csvContent);
+	console.log(encodedUri);
 	window.open(encodedUri);
 }
-function openFile(){
-    chrome.windows.create(
-      {
-          focused: true,
-          width: 300,
-          height: 300,
-          type: "popup",
-          url: "index2.html",
-          top: 0,
-          left: 0,
-  
-      })
-  }
-function sendMail() {
-	createFolder();
+
+async function sendMail() {
+	// createFolder();
+	await checkFolder();
 	var text = transcriptToShow.map(e => e.join(",")).join("\n");
 	console.log("text..",text);
 	if(text){
-		chrome.storage.local.get(["token"], function(resp) {
+		chrome.storage.local.get(["token","folder_id"], function(resp) {
 			console.log(resp.token);
 		const blob = new Blob([text],{type:'text/csv;charset=utf-8'});
 
@@ -302,8 +292,8 @@ function sendMail() {
 
 		var metadata = {
 		  name:'Live-Transcript '+ h + "-" + mi + "-" + s +'.csv',
-		  mimeType:'text/csv;charset=utf-8'
-		  //parents:['1gdL-5KUJ2fGonwrfe9sxjO5ztzRn-Z-v']
+		  mimeType:'text/csv;charset=utf-8',
+		  parents:[resp.folder_id]
 		};
 		var formData = new FormData();
 		formData.append("metadata",new Blob([JSON.stringify(metadata)],{type:'application/json'}));
@@ -315,27 +305,91 @@ function sendMail() {
 		  body: formData
 		}).then(function(response){
 		  return response.json();
-		}).then(function(value){
-		  console.log(value);
+		}).then(function(){
+			let button3 = document.getElementById('btn3')
+			button3.addEventListener('click',()=>{
+
+				let links =  "https://drive.google.com/drive/u/1/folders/"+resp.folder_id;
+				console.log("link",links);
+				parent.open(links);
+			})
+				
 		});
 	});
 	  }
 }
-function createFolder(){
+function checkFolder(){
+	return new Promise((resolve, reject) => {
+		let folders = []
 	chrome.storage.local.get(["token"], function(resp){
-		fetch("https://www.googleapis.com/drive/v3/files",{
-			method: "POST",
+		const phrase = "Live-Transcript";
+		fetch("https://www.googleapis.com/drive/v2/files?orderBy=folder&q=" + encodeURIComponent(`mimeType = 'application/vnd.google-apps.folder'`)
+
+		,
+		{
+			method: "GET",
 			headers: {
-			  Authorization: `Bearer ${resp.token}`,
-			  "Content-Type": "application/json",
+				Authorization: `Bearer ${resp.token}`,
+				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({
-			  mimeType: "application/vnd.google-apps.folder",
-			  name: "Live Transcript",
-			}),
-		}).then(function(response){
-			return response.json();
-	});
+		}).then(async function(response){
+			var data = await response.json()
+			console.log(data);
+			let dataArr = data.items;
+			dataArr.forEach(el => {
+				if(!el.explicitlyTrashed){
+					let obj = {
+						title : el.title,
+						id : el.id
+					}
+					folders.push(obj)	
+				}
+			});
+			let flag = 0
+			for (let i = 0; i < folders.length; i++) {
+				const folder = folders[i];
+				if(folder.title.includes(phrase)){
+					chrome.storage.local.set({folder_id : folder.id}, function(resp){
+						console.log(resp);
+						resolve();
+					})
+					flag = 1
+					break;
+				}
+			}
+			if(flag == 0){
+				await createFolder();
+				resolve();
+			}
+	}).catch(error=>{
+		console.log(error);
+		reject(error)
+	})
+});
+	})
+	
+}
+function createFolder(){
+	return new Promise((resolve, reject) => {
+		chrome.storage.local.get(["token"], function(resp){
+			fetch("https://www.googleapis.com/drive/v3/files",{
+				method: "POST",
+				headers: {
+				  Authorization: `Bearer ${resp.token}`,
+				  "Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+				  mimeType: "application/vnd.google-apps.folder",
+				  name: "Live-Transcript",
+				}),
+			}).then(async function(response){
+				let data = await response.json()
+				console.log(data);
+				chrome.storage.local.set({folder_id : data.id}, function(resp){
+					resolve();
+				})
+		})
+	})
 });
 }
 // let createFolderOptions = { 
@@ -353,7 +407,6 @@ function createFolder(){
   
 //   const response = await fetch("https://www.googleapis.com/drive/v3/files", createFolderOptions);
 //   const json = await response.json();
-
 let button = document.getElementById("btn");
 button.addEventListener('click', () => {
 	Startspeaking();
@@ -365,15 +418,26 @@ button1.addEventListener('click', () => {
 });
 let button2 = document.getElementById("btn2");
 button2.addEventListener('click',()=>{
-	sendMail();
+	chrome.identity.getAuthToken({interactive: true}, function(token) {
+        console.log(token);
+        fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`)
+        .then((response)=> response.json())
+        .then((response) => {
+          chrome.storage.local.set({email: response.email,token:token}, function() {
+            console.log('Value is set to ' + response.email);
+          });
+          console.log(response)
+		  sendMail();
+        })      
+      });
+	
+$('.overlay').fadeIn('fast');
+	$('#popup').show('fast');
+	$('.lightbox-close').on('click', function(){
+		$(this).closest('.lightbox').hide('fast');
+		$('.overlay').fadeOut('fast');
+	  });
 })
-let button3=document.getElementById("btn3");
-button3.addEventListener('click',()=>{
-	openFile();
-})
-
-
-
 // function sendMail(){
 // 	chrome.storage.local.get(['email'], function(result) {
 // 		var mail= result.email;

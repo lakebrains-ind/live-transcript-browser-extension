@@ -17,8 +17,8 @@
       href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/browser.css" />
-  <script type="text/javascript" src="/js/oauth.js"></script>
 
   </head>
   <body>
@@ -30,7 +30,7 @@
         srcset=""
       />
       <input type="submit" class="button schedule-meeting-btn" id="btn"
-      value="Capture Transcript" ; >
+      value="Capture Transcript" >
       <div class="myDiv" id="my_console" style="margin-top: 15px">
         <p></p>
         <p></p>
@@ -56,17 +56,19 @@
       alt=""
       srcset=""
     />
+    <div class="overlay"></div>
 
-    <input
-    type="submit"
-    id="btn3"
-    class="button1"
-    value="ShowFile"
-    img
-    src="img\download-icon.jpg"
-    alt=""
-    srcset=""
-  />
+    <div class="lightbox" id="popup" style="display: none;">
+      <h3>File Link</h3>
+      <div class="content" id="filelink">
+
+      </div>
+      <p class="button-panel">
+        <i class="fa fa-times  lightbox-close" aria-hidden="true"></i>
+        <input type="button" id="btn3" class="button1" value="GetLink">
+        <!-- <button type="button" class="secondary lightbox-close">Close</button> -->
+      </p>
+    </div>
       <p class="container copyright text-center text-md-left">
         © 2022,
         <a class="font-w-700" href="https://devlopment.lakebrains.com/"
