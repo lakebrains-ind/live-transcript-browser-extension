@@ -43,11 +43,25 @@ const data = [];
     });
 
     ApiRoutes.post("/apiexpire", async(req, res) => {
-      const APIdata =await req.body;
+      const APIdata = await req.body;
+    //   console.log(req.body)
+     Api.update(
+       { appId: 53432421 },
+       {
+         $set: {
+           "items.$.expire": "two updated",
+         },
+       },
+       function (err) {
+         console.log(err);
+       }
+     );
       res.json({
-        body: req.body,
         data: APIdata,
+        data2: "hello",
+        message:"hello ther"
       });
+    });
 
       // console.log(req)s
     //   console.log(data);
@@ -60,7 +74,7 @@ const data = [];
         //   console.log(data[i].appid);
         // }
     //   }
-    });
+    
 //   });
 
 

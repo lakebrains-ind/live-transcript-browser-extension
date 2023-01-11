@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 var session = require("express-session");
 var cors = require("cors");
+// app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 var ApiRoutes =require('./controllers/apiConttroller')
 var corsOptions = {
   origin: "*",
@@ -23,7 +26,6 @@ app.use(
   })
 );
 
-app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 module.exports = app;
