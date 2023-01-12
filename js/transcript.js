@@ -86,20 +86,40 @@ const startTranscript = async (stream, mic) => {
   console.log("from startTranscript and mic is ", mic);
   let apiCredentials;
   
-  fetch("http://localhost:5000/api/getapi")
-    .then((response) => {
+  let myPromise = new Promise(function (myResolve, myReject) {
+    fetch("http://localhost:7070/api/getapi")
+      .then((response) => {
         return response.json();
       })
-      .then((data) => {
-        console.log(data.data);
-       apiCredentials=data.data[0]
-    console.log(apiCredentials)
-})
-.catch((error)=> {
-  // handle the error
-  console.log(error)
-});
-// console.log(apiCredentials);
+      .then(async(data) => {
+        console.log(data);
+        apiCredentials =await data;
+         myResolve(apiCredentials); 
+      })
+      .catch((error) => {
+        console.log(error);
+        myReject(error); 
+      });
+      // console.log(apiCredentials);
+   // when successful
+    // when error
+  });
+
+  // "Consuming Code" (Must wait for a fulfilled Promise)
+  var FinalApiData
+ await myPromise.then(
+   async function (value) {
+       FinalApiData= await value
+      // console.log("apid fetched",value);
+      console.log(FinalApiData);
+      /* code if successful */
+    },
+    function (error) {
+      console.log("error while calling api",error);
+      /* code if some error */
+    }
+    );
+    console.log(FinalApiData);
 
 const fetchData = {
   method: "POST",
@@ -108,16 +128,23 @@ const fetchData = {
   },
   body: JSON.stringify({
     type: "application",
-    appId: "4e703070536e6e58356e4b77306d56374d413730484e644d42723579357a796",
-    appSecret:
-      "3136653373426c2d375a6a524763374c524f414f64576435595954626d6b6e59306e4e654467596a3173314453447167674532367957736e714131494632595f",
+    appId: FinalApiData.appId,
+    // appId: "6e4b756a72386939394a4771777447505849696275786a736f75533467546852",
+    appSecret: FinalApiData.appSecret,
+    // appSecret:
+    //   "7a46586f4a5a7757636258324d68444a5a5a6a692d634532656456434179384870485570425a6e57453831614b4b64633154306d3935483534634b737a37596b",
   }),
 };
+
 const res = await fetch(
   "https://api.symbl.ai/oauth2/token:generate",
   fetchData
 )
 // console.log(res.status)
+console.log(FinalApiData.appId, FinalApiData.appSecret);
+
+
+
 
 const apiexpire = {
   method: "POST",
@@ -126,12 +153,15 @@ const apiexpire = {
   },
   body: JSON.stringify({
     type: "application",
-    expire:true
+    expire:true,
+    appId:FinalApiData.appId,
+    appSecret:FinalApiData.appSecret
   }),
 };
 if(res.status===401){
-  fetch("/api/apiexpire",apiexpire)
+  fetch("http://localhost:7070/api/apiexpire", apiexpire);
 }
+console.log(FinalApiData);
 const json = await res.json();
 /**
    * The JWT token you get after authenticating with our API.
@@ -259,7 +289,23 @@ const json = await res.json();
 
   // Fired when the WebSocket closes unexpectedly due to an error or lost connetion
   ws.onerror = (err) => {
+    console.log("error from 292")
+    const apiexpire = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "application",
+        expire: true,
+        appId: FinalApiData.appId,
+        appSecret: FinalApiData.appSecret,
+      }),
+    };
+      fetch("http://localhost:7070/api/apiexpire", apiexpire);
     console.error(err);
+
+    
   };
 
   // Fired when the WebSocket connection has been closed

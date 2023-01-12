@@ -17,7 +17,7 @@ ApiRoutes.post("/login", (req, res) => {
 // const fs = require("fs");
 const csv = require("fast-csv");
 // const { emitWarning } = require("process");
-const Api = require("../models/new_user.model");
+const Api = require("../models/api.model");
 const data = [];
 
 // Api.create({appId:'53432425',appSecret:"fsdfsdfs1",expire:false})
@@ -45,22 +45,22 @@ const data = [];
     ApiRoutes.post("/apiexpire", async(req, res) => {
       const APIdata = await req.body;
     //   console.log(req.body)
-     Api.update(
-       { appId: 53432421 },
-       {
-         $set: {
-           "items.$.expire": "two updated",
-         },
-       },
-       function (err) {
-         console.log(err);
-       }
-     );
-      res.json({
-        data: APIdata,
-        data2: "hello",
-        message:"hello ther"
-      });
+    //  const FilterApi = Api.findOne({ appId: 53432421 }, async (err, result) => {
+    //    if (err) throw err;
+      //  res.send(result);
+Api.updateOne(
+  { appId: APIdata.appId },
+  { $set: { expire: true } },
+  async (err, result) => {
+    if (err) throw err;
+    //  res.send(result);
+    res.json({
+      data: APIdata,
+      data2: result,
+      message: result.expire,
+    });
+  }
+);
     });
 
       // console.log(req)s

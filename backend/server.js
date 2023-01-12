@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 
 //Routes
-const User = require("./models/new_user.model");
+const User = require("./models/user_model");
 
 app.use(cookieParser());
 
