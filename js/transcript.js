@@ -1,3 +1,5 @@
+// const { sign } = require("crypto");
+
 let speaker;
 let mic;
 let transObj = [];
@@ -6,69 +8,125 @@ var today = new Date();
 var h = today.getHours();
 var mi = today.getMinutes();
 var s = today.getSeconds();
+
+let blobs;
+let blob;
+let rec;
+let stream;
+let voiceStream;
+let desktopStream;
+
+const download = document.getElementById('btn4');
+
+const stopBtn = document.getElementById("stopBtn");
+
+
 const API_KEY = 'AIzaSyBSN75RpjjIEW3aBD9qaRR0nIZbYXqAhgw'
 const errorElem = document.getElementById('error');
+document.getElementById("btn").style.display="none";
+
+
+
 //Declare the streamConstraints object
 const displayMediaOptions = {
 	audio: true,
 	//{ mandatory: {
-	// chromeMediaSource: 'system',
-	// chromeMediaSourceId:' streamId'
-	// }
-	//},
-	video: false,
-}
-
-function Startspeaking() {
+		// chromeMediaSource: 'system',
+		// chromeMediaSourceId:' streamId'
+		// }
+		//},
+		video: false,
+	}
+async function Startspeaking() {
 	navigator.mediaDevices.getUserMedia(displayMediaOptions)
 		.then(stream => {
 			console.log("hello there");
 			mic = stream;
 			startTranscript(mic, true);
-		}).catch(err => {
+		})
+		.catch(err => {
 			// handling the error if any
 			errorElem.innerHTML = err;
 			errorElem.style.display = "block";
 		});
+
+		desktopStream = await navigator.mediaDevices.getDisplayMedia({ video:true, audio: true });
+    
+  
+	voiceStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true });
+
+
+  const tracks = [
+	...mergeAudioStreams(desktopStream, voiceStream)
+  ];
+  console.log('Tracks to add to stream', tracks);
+  stream = new MediaStream(tracks);
+  console.log('Stream', stream)
+//   videoElement.srcObject = stream2;
+//   videoElement.muted = true;
+
+
+  blobs = [];
+  
+  rec = new MediaRecorder(stream, {mimeType: "video/webm;codecs=H264"});
+  rec.ondataavailable = (e) => blobs.push(e.data);
+  rec.onstop = async () => {
+	
+	blob = new Blob(blobs, {type: 'video/webm'});
+	let url = window.URL.createObjectURL(blob);
+	console.log("URL",url);
+	download.href = url;
+	
+	download.download = 'test.mp4';
+
+
 }
-function startcapture() {
-	chrome.desktopCapture.chooseDesktopMedia(
-		["tab", "window", "audio"],
-		function (streamId) {
-			console.log(streamId);
-			if (streamId) {
-				var obj = {
-					audio: {
-						mandatory: {
-							chromeMediaSource: "desktop",
-							chromeMediaSourceId: streamId,
-						},
-					},
-					video: {
-						optional: [],
-						mandatory: {
-							chromeMediaSource: "desktop",
-							chromeMediaSourceId: streamId,
-							maxWidth: 2560,
-							maxHeight: 1440,
-							maxFrameRate: 30,
-						},
-					},
-				};
-				navigator.mediaDevices
-					.getUserMedia(obj)
-					.then(function (sStream) {
-						console.log(sStream);
-						speaker = sStream;
-						startTranscript(speaker);
-					})
-					.catch(function (err) {
-						console.log(err);
-					});
-			}
-		}
-	);
+rec.start();
+console.log("startREC",rec);
 }
+stopBtn.onclick=()=>{
+rec.stop();
+console.log("StopREc",rec);
+}
+// function startcapture() {
+// 	chrome.desktopCapture.chooseDesktopMedia(
+// 		["tab", "window", "audio"],
+// 		function (streamId) {
+// 			console.log(streamId);
+// 			if (streamId) {
+// 				var obj = {
+// 					audio: {
+// 						mandatory: {
+// 							chromeMediaSource: "desktop",
+// 							chromeMediaSourceId: streamId,
+// 						},
+// 					},
+// 					video: {
+// 						optional: [],
+// 						mandatory: {
+// 							chromeMediaSource: "desktop",
+// 							chromeMediaSourceId: streamId,
+// 							maxWidth: 2560,
+// 							maxHeight: 1440,
+// 							maxFrameRate: 30,
+// 						},
+// 					},
+// 				};
+// 				navigator.mediaDevices
+// 					.getUserMedia(obj)
+// 					.then(function (sStream) {
+// 						console.log(sStream);
+// 						speaker = sStream;
+// 						startTranscript(speaker);
+// 						startRecord();
+// 					})
+// 					.catch(function (err) {
+// 						console.log(err);
+// 					});
+// 			}
+// 		}
+// 	);
+// }
 
 const startTranscript = async (stream, mic) => {
 	// console.log("from startTranscript and mic is ", mic);
@@ -392,26 +450,82 @@ function createFolder(){
 	})
 });
 }
-// let createFolderOptions = { 
-	
-// 	method: "POST",
-// 	headers: {
-// 	  Authorization: `Bearer ${token}`,
-// 	  "Content-Type": "application/json",
-// 	},
-// 	body: JSON.stringify({
-// 	  mimeType: "application/vnd.google-apps.folder",
-// 	  name: "My new google drive folder!",
-// 	}),
-//   };
+function startRecord(){
+	console.log("START");
+}
+
+const mergeAudioStreams = (desktopStream, voiceStream) => {
+    const context = new AudioContext();
+    const destination = context.createMediaStreamDestination();
+    let hasDesktop = false;
+    let hasVoice = false;
+    if (desktopStream && desktopStream.getAudioTracks().length > 0) {
+      // If you don't want to share Audio from the desktop it should still work with just the voice.
+      const source1 = context.createMediaStreamSource(desktopStream);
+      const desktopGain = context.createGain();
+      desktopGain.gain.value = 0.7;
+      source1.connect(desktopGain).connect(destination);
+      hasDesktop = true;
+    }
+    
+    if (voiceStream && voiceStream.getAudioTracks().length > 0) {
+      const source2 = context.createMediaStreamSource(voiceStream);
+      const voiceGain = context.createGain();
+      voiceGain.gain.value = 0.7;
+      source2.connect(voiceGain).connect(destination);
+      hasVoice = true;
+    }
+      
+    return (hasDesktop || hasVoice) ? destination.stream.getAudioTracks() : [];
+  };
+let stream2;
+
+// button.onclick = async()=>{
+// 	desktopStream = await navigator.mediaDevices.getDisplayMedia({ video:true, audio: true });
+    
   
-//   const response = await fetch("https://www.googleapis.com/drive/v3/files", createFolderOptions);
-//   const json = await response.json();
+// 	voiceStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true });
+
+
+//   const tracks = [
+// 	...mergeAudioStreams(desktopStream, voiceStream)
+//   ];
+//   console.log('Tracks to add to stream', tracks);
+//   stream2 = new MediaStream(tracks);
+//   console.log('Stream', stream2)
+//   videoElement.srcObject = stream2;
+//   videoElement.muted = true;
+
+
+//   blobs = [];
+  
+//   rec = new MediaRecorder(stream2, {mimeType: 'video/webm; codecs=vp8,opus'});
+//   rec.ondataavailable = (e) => blobs.push(e.data);
+//   rec.onstop = async () => {
+	
+// 	//blobs.push(MediaRecorder.requestData());
+// 	blob = new Blob(blobs, {type: 'video/webm'});
+// 	let url = window.URL.createObjectURL(blob);
+// 	console.log("URL",url);
+// }
+// }
+
+
+
+
+
+
+
+
 let button = document.getElementById("btn");
 button.addEventListener('click', () => {
 	Startspeaking();
 	startcapture();
 });
+// let button3 = document.getElementById("record-btn");
+// button3.addEventListener('click', () => {
+// 	startRecord();
+// });
 let button1 = document.getElementById("btn1");
 button1.addEventListener('click', () => {
 	stopTranscript();
@@ -430,7 +544,8 @@ button2.addEventListener('click',()=>{
 		  sendMail();
         })      
       });
-	
+
+
 $('.overlay').fadeIn('fast');
 	$('#popup').show('fast');
 	$('.lightbox-close').on('click', function(){
